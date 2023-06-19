@@ -1,0 +1,289 @@
+### tạo laravel project
+composer  create-project laravel/laravel nameproject
+-- Khởi tạo project --prefer-dist bản tối ưu
+OR: composer  create-project laravel/laravel nameproject --prefer-dist
+
+#chay laravel project
+php artisan serve --port=9000
+
+### migration
+Tạo bảng
+php artisan make:migration taotableNsx  --create=nhasanxuat
+hoặc
+php artisan make:migration create_nhasanxuat_table
+
+Update bảng
+php artisan make:migration suatableNsx --table=nhasansuat
+
+$table->increments(‘id’); ➔ field id tăng tự động, unsigned integer
+$table->id(); ➔ field id tang tự động, big Integer ( mặc định là unsigned nên có khóa ngoại qua đây thì cũng nhớ ->unsigned();)
+$table->integer(‘soLuong’); ➔ field kểu integer , tên soLuong      //mặc định là notnull
+$table->string(‘tenSP’, 100); ➔ field kiểu varchar, độ dài 100
+$table->boolean(‘anHien’); ➔ field kiểu Boolean
+$table->double(‘diemTB’, 8, 2); ➔ field kiểu số thực
+$table->dateTime(‘thoiDiemMuaHang’); ➔ field kiểu ngày giờ
+$table->charset = ‘utf8mb4’; ➔ Khai báo charset cho table
+$table->collation = ‘utf8mb4_unicode_ci’; ➔ Khai báo collation cho table
+ $table->timestamps(); ➔ Tạo 2 field created_at và updated_at
+ $table->string('slug')->nullable();  // set column có thể null hay không, mặc định là notnull
+$table->string('slug')->default($value)     // set giá trị mặc định cho column
+
+$table->integer('category_id')->unsigned();
+$table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+
+# chạy tất cả migration
+php artisan migrate
+# chạy 1 migration cụ thể
+php artisan migrate --path=database\migrations\tênFile.php
+
+
+#Tạo controller
+php artisan make:controller HomeController
+
+
+Route::group(['prefix' => 'customers'], function () {
+    Route::get('/', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/create', [CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/create', [CustomerController::class, 'store'])->name('customers.store');
+    Route::get('/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::post('/{id}/edit', [CustomerController::class, 'update'])->name('customers.update');
+    Route::get('/{id}/destroy', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::get('/filter', [CustomerController::class, 'filterByCity'])->name('customers.filterByCity');
+});
+### ORM 
+Customer::findOrFail($id);
+Customer::all();
+$customer = Customer::findOrFail($id);
+$customer->delete();
+$customer->save();
+$customers = Customer::where('city_id', $cityFilter->id)->get();
+$totalCustomerFilter = count($customers);
+
+Muốn xem thông tin DD của quan hệ 1-n thì dùng (trỏ thuộc tính chứ ko phải hàm)
+DD($category->articles);
+Nó khác với DD($category->articles());      // dùng articles() để query builder tiếp
+DD($category->articles()->where('id', 3)->get());       // lấy theo id thì mặc định so sánh '='
+
+// cột khác thì phải chỉ định operator '='
+DD($category->articles()->select('id', 'title')->where('category_id','=', 3)->value('title'));
+hàm get(), first(), value() lấy 1 giá trị, pluck(): lấy danh sách giá trị
+
+
+#Tạo controller với 1 action duy nhất
+php artisan make:controller ShowProfile --invokable
+
+### Tạo controller với đầy đủ các action CRUD
+php artisan make:controller PhotoController --resource
+
+### Tạo middleware
+php artisan make:middleware CheckAge
+
+
+### Tạo file migration
+php artisan make:migration create_customer_table
+Trong cú pháp trên: thì tên create_tenABC_table : khi tạo bảng nó sẽ lấy tên bảng là tenABC
+
+### Thực thi migration
+php artisan migrate
+
+### Tạo Model
+php artisan make:model Customer
+
+protected $table = 'articles';
+
+// để mass object số lượng lớn, khong cần đổ bẳng tay
+protected $fillable = ['title', 'short_intro', 'content', 'category_id', 'author_id'];
+// custom primaryKey
+protected $primaryKey = 'flight_id';
+
+
+### import library
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+
+### Tạo php seed
+php artisan make:seeder CustomerTableSeeder
+
+### chạy seeder
+php artisan db:seed
+
+chỉ định 1 class seed chạy 
+php artisan db:seed --class=CustomerTableSeeder
+Trong 1 số trường hợp có thể “CustomerTableSeeder” không được khởi chạy, 
+khi đó bạn chạy lệnh:
+composer dump-autoload
+$dataArray = [];
+for ($i = 0; $i < 20; $i++) {
+    array_push($dataArray, [
+        'name' => Str::random(10),
+        'dob' => date("Y-m-d", mt_rand(1, time())),
+        'email' => Str::random(10) . '@gmail.com',
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+    ]);
+}
+DB::table('customer')->insert($dataArray);
+
+OR
+import: tuse App\Models\Task;
+
+$task = new Task();
+$task->id = 1;
+$task->title = "Công việc 1";
+$task->content = "Nội dung công việc 1";
+$task->image = "";
+$task->due_date = "2021-03-08";
+$task->save();
+
+
+Config for seeder: 
+public function run(): void
+{
+    $this->call(TasksTableSeeder::class);
+}
+
+--------------------------------------------------------------------------
+// Để upload file: ORM và Eloquent-> bài task-management-CRUD
+
+Để tạo liên kết tượng trưng, sử dụng storage:link Artisan command:
+php artisan storage:link
+
+-- Lưu vào storage\app\public: tự tạo thêm thư mục images\tên file.png
+-- Tên file thì được mã hóa UUID
+if ($request->hasFile('image')) {
+    $image = $request->file('image');
+    $path = $image->store('images', 'public');
+    $task->image = $path;
+}
+
+-- Xóa file trong storage\app\public thì dùng 
+use Illuminate\Support\Facades\Storage;
+
+Storage::delete('/public/' . $currentImg);
+
+php artisan make:auth
+
+
+
+
+
+
+
+
+
+### VALIDATION
+session()->has('errors')            :: kiểm tra trong session có errors không
+$errors->has('user_id')             :: kiểm tra trong session có lỗi user_id không
+
+{{ old('user_id') }}                :: lưu trữ lại giá trị user_id nếu bị sai thì hiển thị lại
+@if ($errors->has('user_id'))       :: kiểm tra xem có lỗi trường user_id ko
+{{ $errors->first('user_id') }}     :: 1 trường thì có nhiều lỗi, first lấy lỗi đầu tiên
+
+Để lấy thông tin nhiều lỗi trên một trường
+@if ($errors->has('user_id'))
+    <ul>
+        @foreach ($errors->get('user_id') as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+@endif
+
+Phía controller để tạo nhiều lỗi thì
+$validator = Validator::make($request->all(), [
+    'user_id' => 'required|integer|min:1',
+]);
+
+if ($validator->fails()) {
+    return redirect()->back()->withErrors($validator)->withInput();
+}
+
+### thêm dữ liệu khi thành công
+Session::flash('success', 'Cập nhật khách hàng thành công');
+@if (Session::has('success'))
+    <p class="text-success">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        {{ Session::get('success') }}
+    </p>
+@endif
+
+### manytomany
+Tạo bảng:
+php artisan make:migration createArticleTag  --create=article_tag
+
+
+### VALIDATION
+VALIDATION: Dùng phương thức validate của request
+$rules = [
+    'title' => 'required|min:5|max:255',
+    'short_intro' => 'required|min:1|max:255',
+    'category_id' => 'integer',
+    'author_id' => 'integer',
+];
+// Có thể đưa :min số kí tự ra ngoài view bằng :min . Đưa attribute cũng thế
+// $message = ['title.required'=> 'Tiêu đề là bắt buộc',
+//             'title.min'=> 'Phải hơn :min kí tự',
+//             'short_intro.required' => ':attribute là bắt buộc, từ 1-255 kí tự'
+//             ];
+$message = [
+            'required'=> 'Trường :attribute là bắt buộc',
+            'min'=> 'Trường :attribute hơn :min kí tự',
+            'short_intro.required' => ':attribute là bắt buộc, từ 1-255 kí tự',
+            'integer' => 'Trường :attribute phải là số'
+            ];
+// Cách 2: để kiểm tra các rule 
+$validatedData = $request->validate($rules, $message);
+
+VALIDATION: Dùng form request
+php artisan make:request ProductRequest 
+OR đưa form Request vào thư mục admin, user
+php artisan make:request admin/ProductRequest 
+php artisan make:request admin/ArticleRequest 
+
+- B1: public function authorize(): bool
+    {
+        return true;        // câp nhật thành true;
+    }
+- B2: import ArticleRequest vào phương thức trong controller
+- B3: Viết lại các phương thức messages và atttributes
+public function messages(){
+        return [
+                    'title.required'=> 'Tiêu đề là bắt buộc',
+                    'title.min'=> 'Phải hơn :min kí tự',
+                    'short_intro.required' => ':attribute là bắt buộc, từ 1-255 kí tự'
+                ];
+}
+// đổi tên các attributes khi hiển thị ra ngoài 'short_intro.required' => ':attribute là bắt buộc, từ 1-255 kí tự'
+// Problem hiển thị: short_intro là bắt buộc, từ 1-255 kí tự
+public function attributes(){
+    return [
+        'title'=> 'Tiêu đề',
+        'short_intro'=> 'Mô tả'
+    ];
+}
+
+// trong form request có thể custom lại sau khi validate mặc định theo rule
+public function withValidator($validator){
+    $validator->after(function ($validator){
+        // if($validator->somethingElseIsInvalid()){
+            // $validator->errors()->add('custom_field', 'aaaaaa');
+        // }
+        $validator->errors()->add('custom_field', 'aaaaaa');
+    });
+}
+
+
+
+
+
+### VIEWBLADE
+Dùng tạo view thì bắt đầu từ thư mục resource/views
+- View đi phân cấp 'customers.index'
+- Dùng @includeIf('layout.components.css_header', ['key_css_header' => 'some data from '])
+  để include và truyền biến qua view con, lấy ra ở view con: <link rel="stylesheet" href="{{ $key_css_header }}">
+   @include('layout.components.js_footer');         // thì không
+- Layout cha: Dung @yield để page extends triển khai phần content
+    @yield('content')   // nếu ở trang con extends không có session 'content' nó vẫn chạy
+- Layout con: Dùng @section ghi đè phần kế thừa đã được định nghĩa ở thằng cha
+
+- Phần action trong FORM: action="{{ route('customers.update', $customer->id) }}">

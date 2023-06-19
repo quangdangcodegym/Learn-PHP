@@ -1,0 +1,17 @@
+-- Cài đặt PHP
+Cài đặt xampp (D:\xampp) trong thư mục này chú ý file D:\xampp\php\php.exe
+Cài đặt biến môi trường:
+	Vào Enviroment path: chọn path, thêm D:\xampp\php
+	Vào teminal gõ: php -v (nếu có thông tin php là ok)
+
+
+Extension VSCODE
+Live server
+PHP Server
+PHP intelephense
+
+Extension Chrome
+Phpview
+
+
+

@@ -1,0 +1,35 @@
+###
+Determine if a variable is declared and is different than NULL
+isset($_GET['name'])
+
+### lấy action bằng tham số trên đường dẫn
+action="<?php echo $_SERVER['PHP_SELF']; ?>
+
+
+###: KHỬ các lệnh javascript hacker
+htmlspecialchars()
+tương đương với lệnh filter_var
+filter_var($_GET['name'], FILTER_SANITIZE_SPECIAL_CHARS)
+filter_input dùng để lọc thông tin trường email gửi lên
+$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+-----------Làm việc với session
+
+###: kiểm tra người dùng có bấm nút submit
+if(isset($_POST['submit']))
+
+### echo thẻ link
+echo '<a href="/session.php">Back to login</a>';
+
+### muốn lấy session thì phải dùng 
+session_start();
+
+### hủy session
+session_destroy();
+
+###: chuyển trang: tương redirect
+header('Location: /LEARN/PHP/basic/session.php');
+
+###: kiểm tra xem nút button có submit không
+if(isset($_POST['submit']))

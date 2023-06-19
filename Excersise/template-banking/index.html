@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/sweetalert2/v11.7.3/sweetalert2.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h3>Create Customer</h3>
+            <form id="frmCreateCustomer" action="post">
+                <div class="row mb-3">
+                    <div class="form-group col-6" >
+                        <label>Full name</label>
+                        <input class="form-control" type="text" id="txtFullNameCre" placeholder="Enter fullname">
+                    </div>
+                    <div class="form-group col-6" >
+                        <label>Email address</label>
+                        <input class="form-control" type="text" id="txtEmailCre" placeholder="Enter email address">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-group col-6" >
+                        <label>Full name</label>
+                        <input class="form-control" type="text" id="txtFullNameCre" placeholder="Enter fullname">
+                    </div>
+                    <div class="form-group col-6" >
+                        <label>Email address</label>
+                        <input class="form-control" type="text" id="txtEmailCre" placeholder="Enter email address">
+                    </div>
+                </div>
+                <button class="btn btn-success">Create</button>
+            </form>
+        </div>
+        <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+        <div class="content">
+            <table id="tbCustomer" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Full name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Balance</th>
+                        <th colspan="5">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr>
+                        <td>1</td>
+                        <td>NVA</td>
+                        <td>nva@co.cc</td>
+                        <td>2345</td>
+                        <td>28 Nguyễn Tri Phương</td>
+                        <td>0</td>
+                        <td>
+                            <button class="btn btn-outline-secondary">
+                                Edit
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-success">
+                                Deposit
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-warning">
+                                Withdraw
+                            </button>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="./assets/jquery/jquery-3.6.0.min.js"></script>
+    <script src="./assets/sweetalert2/v11.7.3/sweetalert2.all.min.js"></script>
+    <script src="./assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="./assets/js/AppBase.js"></script>
+</body>
+</html>

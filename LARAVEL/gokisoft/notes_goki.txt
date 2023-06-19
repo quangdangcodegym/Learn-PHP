@@ -1,0 +1,8 @@
+composer  create-project laravel/laravel gokisoft --prefer-dist
+
+// chỉnh sửa Schema::defaultStringLength(191);
+class AppServiceProvider extends ServiceProvider
+
+
+### Thực thi migration
+php artisan migrate
